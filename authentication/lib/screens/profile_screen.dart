@@ -7,73 +7,48 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthService.currentUser;
-
-    // Ambil avatar user
-    String avatarUrl = '';
-    if (user != null && user.getStringValue('avatar') != '') {
-      avatarUrl =
-          '${AuthService.pb.baseURL}/api/files/${user.collectionId}/${user.id}/${user.getStringValue('avatar')}';
-    }
+    final user = AuthService.user;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profil'),
         centerTitle: true,
-
-        // ⬇️ TOMBOL SILANG (GANTI PANAH)
         leading: IconButton(
           icon: const Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context); // kembali ke halaman sebelumnya (Home)
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Avatar
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: avatarUrl.isNotEmpty
-                  ? NetworkImage(avatarUrl)
-                  : null,
-              child: avatarUrl.isEmpty
-                  ? const Icon(Icons.person, size: 40)
-                  : null,
-            ),
-
-            const SizedBox(height: 20),
-
-            // Nama
+            // Tampilkan Nama User dari PocketBase
             Text(
-              user?.getStringValue('name') ?? 'User',
-              style: const TextStyle(fontSize: 20),
+              user?.getStringValue('name') ?? "No Name",
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
 
-            const SizedBox(height: 8),
-
-            // Email
-            Text(
-              user?.getStringValue('email') ?? '-',
-              style: const TextStyle(color: Colors.grey),
-            ),
+            // Tampilkan Email User
+            Text(user?.getStringValue('email') ?? "No Email"),
 
             const SizedBox(height: 30),
 
-            // Logout
+            // Tombol Logout
             ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () {
                 AuthService.logout();
+                // Kembali ke halaman Login dan hapus semua history halaman
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const LoginScreen()),
                   (route) => false,
                 );
               },
-              child: const Text('Logout'),
+              child: const Text(
+                "Logout",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

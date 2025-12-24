@@ -9,13 +9,13 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          child: const Text("Login Google"),
+        child: ElevatedButton.icon(
+          icon: const Icon(Icons.login),
+          label: const Text("Masuk dengan Google"),
           onPressed: () async {
-            // Panggil fungsi login
             await AuthService.loginWithGoogle();
             
-            // Jika berhasil, pindah halaman
+            // Jika berhasil login, pindah ke halaman Home
             if (AuthService.isLoggedIn && context.mounted) {
               Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (_) => const HomeScreen())

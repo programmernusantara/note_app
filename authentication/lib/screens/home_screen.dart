@@ -11,10 +11,11 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Beranda"),
         centerTitle: true,
         actions: [
+          // Tombol di pojok kanan untuk buka halaman Profil.
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
-              // Pindah ke halaman profil
+              // Pindah ke ProfileScreen (tumpuk layar di atas Home).
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const ProfileScreen()),
