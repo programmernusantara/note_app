@@ -3,7 +3,9 @@ import 'package:online/services/pocketbase_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class HomePages extends StatefulWidget {
-  const HomePages({super.key});
+  final VoidCallback onThemeToggle;
+
+  const HomePages({super.key, required this.onThemeToggle});
 
   @override
   State<HomePages> createState() => _HomePagesState();
@@ -83,9 +85,14 @@ class _HomePagesState extends State<HomePages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Notes'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
+        title: const Text('Assalamulaiakum'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: widget.onThemeToggle,
+            icon: Icon(Icons.dark_mode),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -121,7 +128,7 @@ class _HomePagesState extends State<HomePages> {
                           decoration: isDone
                               ? TextDecoration.lineThrough
                               : TextDecoration.none,
-                          color: isDone ? Colors.grey : Colors.black,
+                          color: isDone ? Colors.grey : null,
                         ),
                       ),
                       trailing: PopupMenuButton<String>(
@@ -161,7 +168,10 @@ class _HomePagesState extends State<HomePages> {
                     onSubmitted: (_) => _addNote(),
                   ),
                 ),
-                IconButton(icon: const Icon(Icons.send), onPressed: _addNote),
+                IconButton(
+                  icon: const Icon(Icons.add_circle, size: 30),
+                  onPressed: _addNote,
+                ),
               ],
             ),
           ),
