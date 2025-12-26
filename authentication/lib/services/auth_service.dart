@@ -12,6 +12,7 @@ class AuthService {
     final store = AsyncAuthStore(
       save: (data) => prefs.setString('pb_auth', data),
       initial: prefs.getString('pb_auth'),
+      clear: () => prefs.remove('pb_auth'),
     );
 
     // Ganti URL ini dengan IP server PocketBase kamu
@@ -24,10 +25,11 @@ class AuthService {
   // Ambil data user yang sedang login
   static RecordModel? get user => pb.authStore.record;
 
-  // Fungsi Login Google
+  /// Melakukan autentikasi OAuth2 menggunakan provider Google.
   static Future<void> loginWithGoogle() async {
+    // Memulai proses OAuth2 dan menunggu konfirmasi berhasil dari server.
     await pb.collection('users').authWithOAuth2('google', (url) async {
-      // Buka browser untuk login Google
+      // Membuka browser eksternal untuk proses login user.
       await launchUrl(url, mode: LaunchMode.externalApplication);
     });
   }
