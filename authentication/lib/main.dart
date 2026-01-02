@@ -6,10 +6,10 @@ import 'screens/login_screen.dart';
 void main() async {
   // 1. Wajib ada jika main() menggunakan async
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // 2. Hubungkan ke PocketBase sebelum aplikasi muncul
-  await AuthService.init(); 
-  
+  await AuthService.init();
+
   runApp(const MyApp());
 }
 

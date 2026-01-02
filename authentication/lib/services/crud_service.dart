@@ -16,4 +16,8 @@ class CrudService {
           filter: 'user = "${AuthService.user?.id}"',
         );
   }
+
+  static Future<void> deleteNote(String id) async {
+    await AuthService.pb.collection('notes').delete(id);
+  }
 }

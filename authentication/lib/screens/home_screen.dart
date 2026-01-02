@@ -30,6 +30,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(_refreshNotes);
   }
 
+  // Hapus catatan
+  Future<void> _deleteNote(String id) async {
+    await CrudService.deleteNote(id);
+    setState(_refreshNotes);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: const Text("Beranda"),
         centerTitle: true,
         actions: [
@@ -77,6 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: Text(
                           note.getStringValue('title'),
                           style: TextStyle(fontSize: 30),
+                        ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () => _deleteNote(note.id),
                         ),
                       );
                     },
