@@ -1,30 +1,52 @@
 import 'package:pocketbase/pocketbase.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class StorageService {
-  static final pb = PocketBase('http://127.0.0.1:8090/');
+  // koneksi ke PocketBase
+  static final PocketBase pb = PocketBase('http://127.0.0.1:8090');
 
-  static Future<List<RecordModel>> getGallery() async {
-    return await pb.collection('gallery').getFullList(sort: '-created');
+  // nama collection
+  static const String collection = 'files';
+
+  // ambil semua file
+  static Future<List<RecordModel>> getAllFiles() async {
+    return pb.collection(collection).getFullList(sort: '-created');
   }
 
-  static Future<void> uploadImage(List<int> bytes, String filename) async {
+  // upload file
+  static Future<void> uploadFile({
+    required List<int> bytes,
+    required String fileName,
+  }) async {
     await pb
-        .collection('gallery')
+        .collection(collection)
         .create(
           files: [
-            http.MultipartFile.fromBytes('photo', bytes, filename: filename),
+            http.MultipartFile.fromBytes('file', bytes, filename: fileName),
           ],
         );
   }
 
-  static Future<void> deleteImage(String id) async {
-    await pb.collection('gallery').delete(id);
+  // download file
+  static Future<void> downloadFile(RecordModel record) async {
+    final fileName = record.getStringValue('file');
+
+    // ambil url file dari PocketBase
+    final Uri url = pb.files.getUrl(record, fileName);
+
+    // paksa browser agar file di-download
+    final Uri downloadUrl = url.replace(
+      queryParameters: {...url.queryParameters, 'download': '1'},
+    );
+
+    if (await canLaunchUrl(downloadUrl)) {
+      await launchUrl(downloadUrl, mode: LaunchMode.externalApplication);
+    }
   }
 
-  static String getImageUrl(RecordModel record) {
-    // Ambil string nama file dari field 'photo'
-    final fileName = record.getStringValue('photo');
-    return pb.files.getUrl(record, fileName).toString();
+  // hapus file
+  static Future<void> deleteFile(String id) async {
+    await pb.collection(collection).delete(id);
   }
 }

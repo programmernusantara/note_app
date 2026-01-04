@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/gallery_screen.dart';
+import '../screens/home_screen.dart';
 
 void main() {
+  // menjalankan aplikasi Flutter
   runApp(const MyApp());
 }
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GalleryScreen(),
+      home: HomeScreen(), // halaman utama
     );
   }
 }
